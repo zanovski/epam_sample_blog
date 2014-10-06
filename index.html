@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head lang="ru-RU">
+    <meta charset="UTF-8">
+    <title>Sample AngularJS blog</title>
+    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <script src="lib/jquery/dist/jquery.min.js"></script>
+    <script src="lib/angular/angular.min.js"></script>
+    <script src="lib/angular-route/angular-route.min.js"></script>
+</head>
+<body>
+
+    <nav class="navbar navbar-default navbar-inverse" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#/">Sample-blog</a>
+            </div>
+
+            <div class="navbar-right">
+                <button create-article data-tmp="templates/create_article.html" class="btn btn-success navbar-btn"><span class="glyphicon glyphicon-plus"></span> Add article</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container" ng-view></div>
+    <script src="app.js"></script>
+</body>
+</html>

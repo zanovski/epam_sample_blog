@@ -1,0 +1,23 @@
+{
+  "name": "sample_blog",
+  "version": "0.0.0",
+  "authors": [
+    "Aliaksandr Zanouski <aliaksandr_zanouski@epam.com>"
+  ],
+  "main": "index.html",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "1.11",
+    "angular": "~1.2.26",
+    "angular-route": "~1.2.26",
+    "bootstrap": "~3.2.0"
+  }
+}
