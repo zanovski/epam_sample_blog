@@ -31,13 +31,7 @@ angular.module('services', [])
         }
         /*update: function(article) {
             return $http.put('http://54.72.3.96:3000/posts', article);
-        },
-
-        getById: function(id) {
-            return $http.get('http://54.72.3.96:3000/posts/' + id)
-                .then(function(res) {
-                    return res.data;
-                });
+        }
         }*/
     }
 }])

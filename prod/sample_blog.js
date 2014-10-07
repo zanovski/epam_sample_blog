@@ -63,7 +63,10 @@ angular.module('directives', ['services'])
 })
 .directive('createArticle', ['template', '$compile', function(template, $compile) {
     return {
-        restrict: 'A',
+        restrict: 'E',
+        template: '<button class="btn btn-success navbar-btn">' +
+            '<span class="glyphicon glyphicon-plus"></span> Add article' +
+            '</button>',
         scope: {},
         controller: ['$scope','article', function($scope, article) {
             $scope.article = {};
@@ -75,7 +78,7 @@ angular.module('directives', ['services'])
         }],
         link: function($scope, element, attr) {
             element.click(function() {
-                template.getTemplate(attr.tmp)
+                template.getTemplate('templates/create_article.html')
                     .then(function(tmp) {
                         var modal = $compile(tmp)($scope);
                         $('body').append(modal);
@@ -123,13 +126,7 @@ angular.module('services', [])
         }
         /*update: function(article) {
             return $http.put('http://54.72.3.96:3000/posts', article);
-        },
-
-        getById: function(id) {
-            return $http.get('http://54.72.3.96:3000/posts/' + id)
-                .then(function(res) {
-                    return res.data;
-                });
+        }
         }*/
     }
 }])
