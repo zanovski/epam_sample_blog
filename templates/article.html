@@ -1,5 +1,6 @@
 <div class="panel-body">
-    <button type="button" class="btn btn-default btn-xs pull-right">read</button>
+    <a class="btn btn-default btn-xs pull-right read" ng-href="#/article/{{article._id}}">read</a>
     <h4 style="display: inline-block">{{article.title}}</h4> <small>{{article.date | date:'dd.MM.yyyy'}}</small>
     <p>{{article.body | limitTo: 250}}</p>
+    <small><a ng-href="mailto:{{article.email}}">{{article.author}}</a></small>
 </div>
