@@ -2,12 +2,12 @@
  * Created by Aliaksandr_Zanouski on 10/7/2014.
  */
 angular.module('services', [])
-    .service('article', ['$http', '$rootScope', function($http, $rootScope) {
+    .service('article', ['$http', '$rootScope', 'makeShortPreview', function($http, $rootScope, makeShortPreview) {
         this.getArticles = function() {
             return $http
                 .get(/*'http://54.72.3.96:3000/posts'*/'http://restik.herokuapp.com/post')
                 .then(function(res) {
-                    return res.data;
+                    return makeShortPreview(res.data);
                 });
         };
         this.create = function(article) {
@@ -45,4 +45,14 @@ angular.module('services', [])
                     return res;
                 })
         }
-    }]);
+    }])
+    .factory('makeShortPreview', function() {//наверно сюда подойдёт лучше фильтр <p>{{article.body | limitTo: 100}}</p>
+        return function(articles) {
+            return angular.isArray(articles)
+            ? articles.map(function(article) {
+                article.preview = article.body.substring(0, 100);
+                return article;
+            })
+            : articles;
+        }
+    });

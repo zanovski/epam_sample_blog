@@ -12,8 +12,6 @@ angular.module('controllers', ['services'])
 }])
 .controller('articleCtrl', ['$scope', 'article', '$location', 'currentArticle', function($scope, article, $location, currentArticle) {
     $scope.article = currentArticle;
-    $scope.edit = function() {};
-    $scope.save = function() {};
     $scope.remove = function(id) {
         article.remove(id)
             .then(function() {
