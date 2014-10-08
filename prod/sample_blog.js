@@ -51,52 +51,52 @@ angular.module('controllers', ['services'])
  * Created by Aliaksandr_Zanouski on 10/7/2014.
  */
 angular.module('directives', ['services'])
-.directive('articleSection', function() {
-    return {
-        restrict: 'E',
-        templateUrl: 'templates/article.html',
-        replace: true,
-        scope: {
-            article: '='
+    .directive('articleSection', function() {
+        return {
+            restrict: 'E',
+            templateUrl: 'templates/article.html',
+            replace: true,
+            scope: {
+                article: '='
+            }
         }
-    }
-})
-.directive('createArticle', ['template', '$compile', function(template, $compile) {
-    return {
-        restrict: 'E',
-        replace: true,
-        template: '<button class="btn btn-success navbar-btn">' +
-            '<span class="glyphicon glyphicon-plus"></span> Add article' +
-            '</button>',
-        scope: {},
-        controller: ['$scope','article', function($scope, article) {
-            $scope.article = {};
-            $scope.save = function(event) {
-                if((event.type === 'keyup' && event.keyCode === 13) || event.type === 'click') {
-                    article.create($scope.article);
-                }
-            };
-            $scope.$on('article:create', function() {
+    })
+    .directive('createArticle', ['template', '$compile', function(template, $compile) {
+        return {
+            restrict: 'E',
+            replace: true,
+            template: '<button class="btn btn-success navbar-btn">' +
+                '<span class="glyphicon glyphicon-plus"></span> Add article' +
+                '</button>',
+            scope: {},
+            controller: ['$scope','article', function($scope, article) {
                 $scope.article = {};
-            });
-        }],
-        link: function($scope, element, attr) {
-            element.click(function() {
-                template.getTemplate('templates/create_article.html')
-                    .then(function(tmp) {
-                        var modal = $compile(tmp)($scope);
-                        $('body').append(modal);
-                        modal.find('.close').click(function() {
-                            modal.remove();
+                $scope.save = function(event) {
+                    if((event.type === 'keyup' && event.keyCode === 13) || event.type === 'click') {
+                        article.create($scope.article);
+                    }
+                };
+                $scope.$on('article:create', function() {
+                    $scope.article = {};
+                });
+            }],
+            link: function($scope, element) {
+                element.click(function() {
+                    template('templates/create_article.html')
+                        .then(function(tmp) {
+                            var modal = $compile(tmp)($scope);
+                            $('body').append(modal);
+                            modal.find('.close').click(function() {
+                                modal.remove();
+                            });
+                            $scope.$on('article:create', function() {
+                                modal.remove();
+                            });
                         });
-                        $scope.$on('article:create', function() {
-                            modal.remove();
-                        });
-                    });
-            });
-        }
-    };
-}])
+                });
+            }
+        };
+    }])
     .directive('editArticle', ['template', '$compile', function(template, $compile) {
         return {
             restrict:'A',
@@ -110,9 +110,9 @@ angular.module('directives', ['services'])
                     }
                 };
             }],
-            link: function($scope, element, attr) {
+            link: function($scope, element) {
                 element.click(function() {
-                    template.getTemplate('templates/create_article.html')
+                    template('templates/create_article.html')
                         .then(function(tmp) {
                             var modal = $compile(tmp)($scope);
                             $('body').append(modal);
@@ -131,16 +131,15 @@ angular.module('directives', ['services'])
  * Created by Aliaksandr_Zanouski on 10/7/2014.
  */
 angular.module('services', [])
-.factory('article', ['$http', '$rootScope', function($http, $rootScope) {
-    return {
-        getArticles: function() {
+    .service('article', ['$http', '$rootScope', function($http, $rootScope) {
+        this.getArticles = function() {
             return $http
                 .get(/*'http://54.72.3.96:3000/posts'*/'http://restik.herokuapp.com/post')
                 .then(function(res) {
                     return res.data;
                 });
-        },
-        create: function(article) {
+        };
+        this.create = function(article) {
             article.date = new Date;
             $http.post(/*'http://54.72.3.96:3000/posts'*/'http://restik.herokuapp.com/post', article)
                 .then(function(res) {
@@ -148,27 +147,25 @@ angular.module('services', [])
                     return res;
                 });
 
-        },
-        remove: function(id) {
+        };
+        this.remove = function(id) {
             return $http.delete('http://restik.herokuapp.com/post/' + id);
-        },
-        getById: function(id) {
+        };
+        this.getById = function(id) {
             return $http.get('http://restik.herokuapp.com/post/' + id)
                 .then(function(res) {
                     return res.data;
                 });
-        },
-        update: function(article) {
+        };
+        this.update = function(article) {
             return $http.put('http://restik.herokuapp.com/post/' + article._id, article)
                 .then(function() {
                     $rootScope.$broadcast('article:update');
                 });
-        }
-    }
-}])
-.factory('template', ['$q', '$http', '$templateCache', function($q, $http, $tC) {
-    return {
-        getTemplate: function(url) {
+        };
+    }])
+    .factory('template', ['$q', '$http', '$templateCache', function($q, $http, $tC) {
+        return function(url) {
             return $q.when($tC.get(url) || $http.get(url))
                 .then(function(res) {
                     if(angular.isObject(res)) {
@@ -177,5 +174,4 @@ angular.module('services', [])
                     return res;
                 })
         }
-    };
-}]);
+    }]);
