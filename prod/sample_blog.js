@@ -74,7 +74,10 @@ angular.module('directives', ['services'])
                 if((event.type === 'keyup' && event.keyCode === 13) || event.type === 'click') {
                     article.create($scope.article);
                 }
-            }
+            };
+            $scope.$on('article:create', function() {
+                $scope.article = {};
+            });
         }],
         link: function($scope, element, attr) {
             element.click(function() {
