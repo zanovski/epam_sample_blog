@@ -1,6 +1,7 @@
 <div class="row">
     <div class="col-xs-10">
         <h3>{{article.title}}</h3>
+        <img ng-show="article.image" ng-src="{{article.image}}" class="img-responsive img-thumbnail" alt="image">
         <p>{{article.body}}</p>
     </div>
     <div class="col-xs-2">
