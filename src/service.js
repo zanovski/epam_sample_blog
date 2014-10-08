@@ -28,11 +28,13 @@ angular.module('services', [])
                 .then(function(res) {
                     return res.data;
                 });
+        },
+        update: function(article) {
+            return $http.put('http://restik.herokuapp.com/post/' + article._id, article)
+                .then(function() {
+                    $rootScope.$broadcast('article:update');
+                });
         }
-        /*update: function(article) {
-            return $http.put('http://54.72.3.96:3000/posts', article);
-        }
-        }*/
     }
 }])
 .factory('template', ['$q', '$http', '$templateCache', function($q, $http, $tC) {

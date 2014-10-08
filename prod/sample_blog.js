@@ -64,13 +64,14 @@ angular.module('directives', ['services'])
 .directive('createArticle', ['template', '$compile', function(template, $compile) {
     return {
         restrict: 'E',
+        replace: true,
         template: '<button class="btn btn-success navbar-btn">' +
             '<span class="glyphicon glyphicon-plus"></span> Add article' +
             '</button>',
         scope: {},
         controller: ['$scope','article', function($scope, article) {
             $scope.article = {};
-            $scope.create = function(event) {
+            $scope.save = function(event) {
                 if((event.type === 'keyup' && event.keyCode === 13) || event.type === 'click') {
                     article.create($scope.article);
                 }
@@ -95,7 +96,37 @@ angular.module('directives', ['services'])
             });
         }
     };
-}]);
+}])
+    .directive('editArticle', ['template', '$compile', function(template, $compile) {
+        return {
+            restrict:'A',
+            scope: {
+                article: '=editArticle'
+            },
+            controller: ['$scope', 'article', function($scope, article) {
+                $scope.save = function(event) {
+                    if((event.type === 'keyup' && event.keyCode === 13) || event.type === 'click') {
+                        article.update($scope.article);
+                    }
+                };
+            }],
+            link: function($scope, element, attr) {
+                element.click(function() {
+                    template.getTemplate('templates/create_article.html')
+                        .then(function(tmp) {
+                            var modal = $compile(tmp)($scope);
+                            $('body').append(modal);
+                            modal.find('.close').click(function() {
+                                modal.remove();
+                            });
+                            $scope.$on('article:update', function() {
+                                modal.remove();
+                            });
+                        });
+                })
+            }
+        }
+    }]);
 /**
  * Created by Aliaksandr_Zanouski on 10/7/2014.
  */
@@ -126,11 +157,13 @@ angular.module('services', [])
                 .then(function(res) {
                     return res.data;
                 });
+        },
+        update: function(article) {
+            return $http.put('http://restik.herokuapp.com/post/' + article._id, article)
+                .then(function() {
+                    $rootScope.$broadcast('article:update');
+                });
         }
-        /*update: function(article) {
-            return $http.put('http://54.72.3.96:3000/posts', article);
-        }
-        }*/
     }
 }])
 .factory('template', ['$q', '$http', '$templateCache', function($q, $http, $tC) {

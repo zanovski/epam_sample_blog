@@ -1,6 +1,6 @@
 <div class="panel-body">
-    <a class="btn btn-default btn-xs pull-right read" ng-href="#/article/{{article._id}}">read</a>
-    <h4 style="display: inline-block">{{article.title}}</h4> <small>{{article.date | date:'dd.MM.yyyy'}}</small>
+    <button edit-article="article" class="btn btn-default btn-xs pull-right read"><span class="glyphicon glyphicon-pencil"></span></button>
+    <a ng-href="#/article/{{article._id}}"><h4 style="display: inline-block">{{article.title}}</h4></a> <small>{{article.date | date:'dd.MM.yyyy'}}</small>
     <p>{{article.body | limitTo: 250}}</p>
-    <small><a ng-href="mailto:{{article.email}}">{{article.author}}</a></small>
+    <small><a ng-href="#/maybe/path/to/user/profile">{{article.author}}</a></small>
 </div>
