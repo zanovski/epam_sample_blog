@@ -1,4 +1,4 @@
-<div class="panel-body">
+<div class="panel-body" style="background-image: url({{article.image}}); background-repeat: no-repeat; background-size: 400px; background-position:  750px 0;">
     <button edit-article="article" class="btn btn-default btn-xs pull-right read"><span class="glyphicon glyphicon-pencil"></span></button>
     <a ng-href="#/article/{{article._id}}"><h4 style="display: inline-block">{{article.title}}</h4></a>
     <p>{{article.body | limitTo: 100}}</p>

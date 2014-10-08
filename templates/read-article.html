@@ -2,7 +2,9 @@
     <div class="col-xs-10">
         <h3>{{article.title}}</h3>
         <img ng-show="article.image" ng-src="{{article.image}}" class="img-responsive img-thumbnail" alt="image">
+        <hr/>
         <p>{{article.body}}</p>
+        <small class="text-muted">By {{article.author}}</small>
     </div>
     <div class="col-xs-2">
         <button edit-article="article" class="btn btn-warning btn-lg btn-block"><span class="glyphicon glyphicon-pencil"></span> Edit</button>
