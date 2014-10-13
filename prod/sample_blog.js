@@ -139,7 +139,7 @@ angular.module('services', [])
         };
         this.create = function(article) {
             article.date = new Date;
-            $http.post(/*'http://54.72.3.96:3000/posts'*/'http://restik.herokuapp.com/post', article)
+            return $http.post(/*'http://54.72.3.96:3000/posts'*/'http://restik.herokuapp.com/post', article)
                 .then(function(res) {
                     $rootScope.$broadcast('article:create');
                     return res;
@@ -157,8 +157,9 @@ angular.module('services', [])
         };
         this.update = function(article) {
             return $http.put('http://restik.herokuapp.com/post/' + article._id, article)
-                .then(function() {
+                .then(function(res) {
                     $rootScope.$broadcast('article:update');
+                    return res;
                 });
         };
     }])
