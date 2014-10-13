@@ -4,7 +4,7 @@
 describe('Unit: Controllers', function() {
 
     describe('articlesCtrl', function() {
-        var createController, scope;
+        var createController, scope, rootScope, article;
         var items = [
             {
                 title: 'Title !',
@@ -18,7 +18,9 @@ describe('Unit: Controllers', function() {
         ];
         beforeEach(function() {
             module('controllers');
-            inject(function($rootScope, $controller, article) {
+            inject(function($rootScope, $controller, $injector) {
+                rootScope = $rootScope;
+                article = $injector.get('article');
                 scope = $rootScope.$new();
                 createController = function() {
                     return $controller('articlesCtrl', {
@@ -28,16 +30,19 @@ describe('Unit: Controllers', function() {
                     });
                 };
             });
+            spyOn(article, 'getArticles').andCallThrough();
         });
 
         it('$scope.articles should be an array', function() {
             createController();
+            rootScope.$broadcast('article:create');
+            expect(article.getArticles).toHaveBeenCalled();
             expect(angular.isArray(scope.articles)).toBe(true);
         });
     });
 
     describe('articleCtrl', function() {
-        var createController, scope;
+        var createController, scope, article, rootScope;
         var currentArticle = {
                 title: 'Title !',
                 body: 'articles should be updated after addition of new article !!!!',
@@ -45,8 +50,10 @@ describe('Unit: Controllers', function() {
             };
         beforeEach(function() {
             module('controllers');
-            inject(function($rootScope, $controller, article, $location) {
+            inject(function($rootScope, $controller, $location, $injector) {
                 scope = $rootScope.$new();
+                article = $injector.get('article');
+                rootScope = $rootScope;
                 createController = function() {
                     return $controller('articleCtrl', {
                         $scope: scope,
@@ -56,10 +63,13 @@ describe('Unit: Controllers', function() {
                     });
                 };
             });
+            spyOn(article, 'remove').andCallThrough();
         });
 
         it('$scope.articles should be an array', function() {
             createController();
+            scope.remove(12);
+            expect(article.remove).toHaveBeenCalled();
             expect(angular.isObject(scope.article)).toBe(true);
         });
     });
